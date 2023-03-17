@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#3399EA</color>
+    <color name="purple_500">#3399EA</color>
+    <color name="purple_700">#1C75BB</color>
+    <color name="teal_200">#3399EA</color>
+    <color name="teal_700">#3399EA</color>
+    <color name="black">#FF000000</color>
+    <color name="data">#4C4C4C</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="light_white">#F3F3F3</color>
+
+    <color name="app_light_blue">#3399EA</color>
+    <color name="app_dark_blue">#1C75BB</color>
+    <color name="colorPrimary">#1C75BB</color>
+    <color name="app_yellow">#FBAF41</color>
+
+    <color name="red">#D2222D</color>
+    <color name="green">#238823</color>
+    <color name="gray">#808080</color>
+    <color name="view">#808080</color>
+
+    <color name="toolbar_text_color">#FFFFFFFF</color>
+    <color name="toolbar_bg_color">#3399EA</color>
+
+    <color name="et_title_text_color">#D31414</color>
+    <color name="et_text_color">#000000</color>
+    <color name="et_hint_color">#8F8F8F</color>
+</resources>

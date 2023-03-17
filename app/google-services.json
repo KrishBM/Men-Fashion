@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "6059959721",
+    "firebase_url": "https://men-fashion-2701a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "men-fashion-2701a",
+    "storage_bucket": "men-fashion-2701a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6059959721:android:ae3570a0e51a2b38e310b8",
+        "android_client_info": {
+          "package_name": "com.example.menfashion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "6059959721-sf7kdbdrcinls5lkdr8ohp2599vvouok.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-Ei_1nPL5N-7y0x_9iKfm714w645rRiE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "6059959721-sf7kdbdrcinls5lkdr8ohp2599vvouok.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

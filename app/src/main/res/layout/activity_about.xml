@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".AboutActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_ss"
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="about.json"
+                app:lottie_loop="false"
+                app:lottie_repeatMode="restart" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/view" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/pop_semi_bold"
+                android:gravity="center"
+                android:padding="24dp"
+                android:text="@string/app_name"
+                android:textAllCaps="true"
+                android:textColor="@color/red"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16sp"
+                android:layout_marginTop="32sp"
+                android:layout_marginRight="16sp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="26sp"
+                    android:layout_height="26sp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_name"
+                    app:tint="@color/data" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/pop_semi_bold"
+                    android:text="Owner :"
+                    android:textColor="@color/data"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pop_regular"
+                    android:text="Krish Moradiya\nDarshak Mangaroliya"
+                    android:textColor="@color/view"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16sp"
+                android:layout_marginTop="16sp"
+                android:layout_marginRight="16sp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="26sp"
+                    android:layout_height="26sp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_address"
+                    app:tint="@color/data" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/pop_semi_bold"
+                    android:text="Place :"
+                    android:textColor="@color/data"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pop_regular"
+                    android:text="Surat, Gujrat, India."
+                    android:textColor="@color/view"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16sp"
+                android:layout_marginTop="16sp"
+                android:layout_marginRight="16sp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="26sp"
+                    android:layout_height="26sp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_phone"
+                    app:tint="@color/data" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/pop_semi_bold"
+                    android:text="Phone :"
+                    android:textColor="@color/data"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pop_regular"
+                    android:text="+91 91067 02771\n+91 90549 61530"
+                    android:textColor="@color/view"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
