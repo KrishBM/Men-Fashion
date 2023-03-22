@@ -58,6 +58,7 @@ public class PopupDialog extends AppCompatDialogFragment {
     // Uri indicates, where the image will be picked from
     private Uri filePath;
 
+    private Context context;
     // request code
     private final int PICK_IMAGE_REQUEST = 22;
 
@@ -69,7 +70,7 @@ public class PopupDialog extends AppCompatDialogFragment {
     DatabaseReference databaseReference;
 
     Shop shop;
-    String name,imageURL,trouserPrice,number,shirtPrice,email,address,password,shopName;
+    String name,imageURL="",trouserPrice,number,shirtPrice,email,address,password,shopName;
     Button uploadButton;
 
     @Override
@@ -114,6 +115,7 @@ public class PopupDialog extends AppCompatDialogFragment {
                         shirtPrice= EshirtPrice.getText().toString();
                         trouserPrice= EtrouserPrice.getText().toString();
 
+
                         uploadImage();
 
 //                        addDatatoFirebase(shopName,address,imageURL,shirtPrice,trouserPrice);//TODO
@@ -155,6 +157,7 @@ public class PopupDialog extends AppCompatDialogFragment {
         }
     }
 
+
     // UploadImage method
     private void uploadImage()
     {
@@ -173,16 +176,23 @@ public class PopupDialog extends AppCompatDialogFragment {
             imageURL=res.getString(R.string.storage_base_url)+path;
             // adding listeners on upload
             // or failure of image
+            Log.d("eeeeeeeeee",imageURL);
+
 
             ref.putFile(filePath).
                     addOnSuccessListener(taskSnapshot -> {
-
                         // Image uploaded successfully
                         // Dismiss dialog
                         progressDialog.dismiss();
-                        Toast.makeText(getContext(), "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
 
-                        addDatatoFirebase(shopName,address,imageURL,shirtPrice,trouserPrice);//TODO
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                addDatatoFirebase(shopName,address,imageURL,shirtPrice,trouserPrice);//TODO
+//                                startActivity(new Intent(context,TailorMainActivity.class));
+                            }
+                        });
 
                     }).
                     addOnFailureListener(new OnFailureListener() {
@@ -192,7 +202,7 @@ public class PopupDialog extends AppCompatDialogFragment {
 
                             // Error, Image not uploaded
                             progressDialog.dismiss();
-                            Toast.makeText(getContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -207,17 +217,14 @@ public class PopupDialog extends AppCompatDialogFragment {
                                     progressDialog.setMessage("Uploaded " + (int)progress + "%");
                                 }
                             });
+//            addDatatoFirebase(shopName,address,imageURL,shirtPrice,trouserPrice);//TODO
         }
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try {
-            listener=(PopupDialogListener) context;
-        }catch (ClassCastException e){
-            throw new ClassCastException(context.toString()+"must implement PopupDialogListener");
-        }
+        this.context = context;
     }
 
     public interface PopupDialogListener{
@@ -246,28 +253,17 @@ public class PopupDialog extends AppCompatDialogFragment {
         shop.setShirtPrice(shirtPrice);
         shop.setTrouserPrice(trouserPrice);
 
-        Log.d("fireeeeeeeeeeeeee",imageURL);
         // we are use add value event listener method
         // which is called with database reference.
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        String Skey = databaseReference.push().getKey();
+        databaseReference.child(Skey).setValue(shop).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // inside the method of on Data change we are setting
-                // our object class to our database reference.
-                // data base reference will sends data to firebase.
-                String Skey = databaseReference.push().getKey();
-                databaseReference.child(Skey).setValue(shop);
-
+            public void onSuccess(Void unused) {
                 // after adding this data we are showing toast message.
-                Toast.makeText(getContext(), "data added", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // if the data is not added or it is cancelled then
-                // we are displaying a failure toast message.
-                Toast.makeText(getContext(), "Fail to add data " + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "data added", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 }

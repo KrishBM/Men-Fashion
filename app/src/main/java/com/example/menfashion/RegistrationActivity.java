@@ -203,20 +203,7 @@ public class RegistrationActivity extends AppCompatActivity implements PopupDial
                                 if(switchStr.equals("tailor")){
                                     openDialog(name,number,email,password);//TODO
 
-//                Intent intent=getIntent();
-//                String shopName=intent.getStringExtra("shopName");
-//                String address=intent.getStringExtra("address");
-//                String imageURL=intent.getStringExtra("imageURL");
-//                String shirtPrice=intent.getStringExtra("shirtPrice");
-//                String trouserPrice=intent.getStringExtra("trouserPrice");
-//                Shop shop=new Shop(shopName,address,imageURL,shirtPrice,trouserPrice);
-//                DAOShop daoShop=new DAOShop();
-//                daoShop.add(shop).addOnSuccessListener(suc->{
-//
-//                    Toast.makeText(getApplicationContext(), "Shop has been created..", Toast.LENGTH_SHORT).show();
-//                }).addOnFailureListener(er->{
-//                    Toast.makeText(getApplicationContext(), "Something is wrong..!!", Toast.LENGTH_SHORT).show();
-//                });
+//                                    startActivity(new Intent(getApplicationContext(),TailorMainActivity.class));
                                 }else{
                                     //Customer
                                     startActivity(new Intent(getApplicationContext(),CustomerMainActivity.class));
@@ -246,6 +233,14 @@ public class RegistrationActivity extends AppCompatActivity implements PopupDial
                             }
                         }
                     });
+
+//            if(switchStr.equals("tailor")){
+//                openDialog(name,number,email,password);//TODO
+//            }else{
+//                //Customer
+//                startActivity(new Intent(getApplicationContext(),CustomerMainActivity.class));
+//            }
+
             //////
         } else {
             stopProgress();
