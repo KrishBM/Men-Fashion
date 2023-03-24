@@ -1,12 +1,7 @@
 package com.example.menfashion;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +31,7 @@ public class SplashActivity extends AppCompatActivity {
     // fetch maintain
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference reference = database.getReference("maintain/status");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +79,32 @@ public class SplashActivity extends AppCompatActivity {
                                 if (currentUser != null) {
                                     String uid = currentUser.getUid();
                                     Log.e("@data", "splash: current user is: " + uid);
-                                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+
+                                    DatabaseReference userRef = database.getReference().child("users").child(uid);
+                                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.exists()) {
+                                                String userRole = snapshot.child("role").getValue(String.class);
+
+                                                assert userRole != null;
+                                                if(userRole.equals("tailor")){
+                                                    startActivity(new Intent(SplashActivity.this, TailorMainActivity.class));
+                                                }
+                                                if(userRole.equals("customer")){
+                                                    startActivity(new Intent(SplashActivity.this, CustomerMainActivity.class));
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            // Handle the error
+                                        }
+                                    });
+
+
+//                                    startActivity(new Intent(SplashActivity.this, MainActivity.class));//customer/tailor route
 
                                 } else {
                                     Log.e("@data", "splash: current user is @null");

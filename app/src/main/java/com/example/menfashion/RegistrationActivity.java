@@ -177,20 +177,24 @@ public class RegistrationActivity extends AppCompatActivity implements PopupDial
                                 FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
                                 DatabaseReference refEmail = FirebaseDatabase.getInstance().getReference();
-                                DatabaseReference finalEmail = refEmail.child(switchStr).child(currentUser.getUid()).child("email");
+                                DatabaseReference finalEmail = refEmail.child("users").child(currentUser.getUid()).child("email");
                                 finalEmail.setValue(email);
 
                                 DatabaseReference refPass = FirebaseDatabase.getInstance().getReference();
-                                DatabaseReference finalPass = refPass.child(switchStr).child(currentUser.getUid()).child("password");
+                                DatabaseReference finalPass = refPass.child("users").child(currentUser.getUid()).child("password");
                                 finalPass.setValue(password);
 
                                 DatabaseReference refName = FirebaseDatabase.getInstance().getReference();
-                                DatabaseReference finalName = refName.child(switchStr).child(currentUser.getUid()).child("name");
+                                DatabaseReference finalName = refName.child("users").child(currentUser.getUid()).child("name");
                                 finalName.setValue(name);
 
                                 DatabaseReference refNumber = FirebaseDatabase.getInstance().getReference();
-                                DatabaseReference finalNumber = refNumber.child(switchStr).child(currentUser.getUid()).child("number");
-                                finalNumber.setValue(password);
+                                DatabaseReference finalNumber = refNumber.child("users").child(currentUser.getUid()).child("number");
+                                finalNumber.setValue(number);
+
+                                DatabaseReference refRole = FirebaseDatabase.getInstance().getReference();
+                                DatabaseReference finalRole = refRole.child("users").child(currentUser.getUid()).child("role");
+                                finalRole.setValue(switchStr);
 
                                 Toast.makeText(getApplicationContext(),
                                                 "Registration successful!",
@@ -201,7 +205,7 @@ public class RegistrationActivity extends AppCompatActivity implements PopupDial
                                 stopProgress();
 
                                 if(switchStr.equals("tailor")){
-                                    openDialog(name,number,email,password);//TODO
+                                    openDialog(name,number,email,password);
 
 //                                    startActivity(new Intent(getApplicationContext(),TailorMainActivity.class));
                                 }else{
@@ -213,7 +217,7 @@ public class RegistrationActivity extends AppCompatActivity implements PopupDial
                                     @Override
                                     public void run() {
                                         // if the user created intent to login activity
-//                                        startActivity(new Intent(RegistrationActivity.this, MainActivity.class));//TODO
+//                                        startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
 //                                        finish();
                                     }
                                 }, 1000);
@@ -235,7 +239,7 @@ public class RegistrationActivity extends AppCompatActivity implements PopupDial
                     });
 
 //            if(switchStr.equals("tailor")){
-//                openDialog(name,number,email,password);//TODO
+//                openDialog(name,number,email,password);
 //            }else{
 //                //Customer
 //                startActivity(new Intent(getApplicationContext(),CustomerMainActivity.class));
@@ -255,6 +259,7 @@ public class RegistrationActivity extends AppCompatActivity implements PopupDial
         bundle.putString("password",password);
         bundle.putString("name", name );
         bundle.putString("number",number);
+        bundle.putString("role",switchStr);
 
         PopupDialog popupDialog=new PopupDialog();
         popupDialog.setArguments(bundle);

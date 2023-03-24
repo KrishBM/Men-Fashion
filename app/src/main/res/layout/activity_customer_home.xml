@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rl"
+    tools:context=".CustomerHomeActivity">
+
+    <include
+        layout="@layout/activity_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:id="@+id/appBar"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_margin="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appBar"
+        android:layout_above="@+id/navBar"
+        />
+
+    <include
+        layout="@layout/activity_customer_nav_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/navBar"
+        android:layout_alignParentBottom="true"/>
+
+
+</RelativeLayout>

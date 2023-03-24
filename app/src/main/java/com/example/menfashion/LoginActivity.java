@@ -24,6 +24,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,6 +40,9 @@ public class LoginActivity extends AppCompatActivity {
     Button switchCustomer,switchTailor;
     private FirebaseAuth mAuth;
     String switchStr="customer";
+    String userRole;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,10 +149,35 @@ public class LoginActivity extends AppCompatActivity {
                                         // hide the progress bar
                                         stopProgress();
 
+                                        DatabaseReference userRef = database.getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()) {
+                                                    userRole = snapshot.child("role").getValue(String.class);
+
+                                                    assert userRole != null;
+                                                    if(userRole.equals("tailor")){
+                                                        startActivity(new Intent(LoginActivity.this, TailorMainActivity.class));
+//                                                        finish();
+                                                    }
+                                                    if(userRole.equals("customer")){
+                                                        startActivity(new Intent(LoginActivity.this, CustomerMainActivity.class));
+//                                                        finish();
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                // Handle the error
+                                            }
+                                        });
+
                                         // if sign-in is successful
                                         // intent to home activity
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                        finish();
+//                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                                        finish();
 
                                     } else {
 
@@ -178,6 +211,7 @@ public class LoginActivity extends AppCompatActivity {
         if (currentUser != null) {
             String uid = currentUser.getUid();
             Log.e("@data", "login: current user is: " + uid);
+
         } else {
             Log.e("@data", "login: current user is @null");
 

@@ -5,15 +5,11 @@ import static android.app.Activity.RESULT_OK;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,23 +23,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -51,7 +35,6 @@ import java.util.UUID;
 public class PopupDialog extends AppCompatDialogFragment {
 
     private EditText EshopName,Eaddress,EshirtPrice,EtrouserPrice;
-    private PopupDialogListener listener;
 
 
     ImageView logoView;
@@ -64,31 +47,34 @@ public class PopupDialog extends AppCompatDialogFragment {
 
     FirebaseStorage storage;
     StorageReference storageReference;
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
 
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    DatabaseReference shopDatabaseReference,tailorDatabaseReference;
 
     Shop shop;
-    String name,imageURL="",trouserPrice,number,shirtPrice,email,address,password,shopName;
+    String name,imageURL="",trouserPrice,number,shirtPrice,email,address,password,role,shopName;
     Button uploadButton;
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater=getActivity().getLayoutInflater();
+        LayoutInflater inflater=requireActivity().getLayoutInflater();
         View view=inflater.inflate(R.layout.popup_tailor,null);
 
+        assert this.getArguments() != null;
         email = this.getArguments().getString("email");
         name = this.getArguments().getString("name");
         number = this.getArguments().getString("number");
         password = this.getArguments().getString("password");
+        role = this.getArguments().getString("role");
 
         logoView=view.findViewById(R.id.logoView);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("ShopData");
+        shopDatabaseReference = firebaseDatabase.getReference().child("ShopData");
 
         shop = new Shop();
 
@@ -118,7 +104,7 @@ public class PopupDialog extends AppCompatDialogFragment {
 
                         uploadImage();
 
-//                        addDatatoFirebase(shopName,address,imageURL,shirtPrice,trouserPrice);//TODO
+                        startActivity(new Intent(getActivity(),TailorMainActivity.class));
 
                     }
 
@@ -169,16 +155,14 @@ public class PopupDialog extends AppCompatDialogFragment {
             progressDialog.show();
 
             // Defining the child of storageReference
+
             String path="images/" + UUID.randomUUID().toString();
+            imageURL=getResources().getString(R.string.storage_base_url)+path;
             StorageReference ref = storageReference.child(path);
 
-            Resources res = getResources();
-            imageURL=res.getString(R.string.storage_base_url)+path;
-            // adding listeners on upload
-            // or failure of image
-            Log.d("eeeeeeeeee",imageURL);
 
 
+// percentage on the dialog box
             ref.putFile(filePath).
                     addOnSuccessListener(taskSnapshot -> {
                         // Image uploaded successfully
@@ -186,38 +170,24 @@ public class PopupDialog extends AppCompatDialogFragment {
                         progressDialog.dismiss();
                         Toast.makeText(context, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
 
-                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                addDatatoFirebase(shopName,address,imageURL,shirtPrice,trouserPrice);//TODO
+                        ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                            Log.d("imggggggggggggggggg",imageURL);
+                            addDatatoFirebase(shopName,address,imageURL,shirtPrice,trouserPrice);
 //                                startActivity(new Intent(context,TailorMainActivity.class));
-                            }
                         });
 
                     }).
-                    addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
+                    addOnFailureListener(e -> {
 
-                            // Error, Image not uploaded
-                            progressDialog.dismiss();
-                            Toast.makeText(context, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                        // Error, Image not uploaded
+                        progressDialog.dismiss();
+                        Toast.makeText(context, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-
-                                // Progress Listener for loading
-                                // percentage on the dialog box
-                                @Override
-                                public void onProgress(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
-                                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                                    progressDialog.setMessage("Uploaded " + (int)progress + "%");
-                                }
-                            });
-//            addDatatoFirebase(shopName,address,imageURL,shirtPrice,trouserPrice);//TODO
+                    .addOnProgressListener(taskSnapshot -> {
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                        progressDialog.setMessage("Uploaded " + (int)progress + "%");
+                    });
+//            addDatatoFirebase(shopName,address,imageURL,shirtPrice,trouserPrice);
         }
     }
 
@@ -250,18 +220,23 @@ public class PopupDialog extends AppCompatDialogFragment {
         shop.setSname(shopName);
         shop.setAddress(address);
         shop.setLogo(imageURL);
+//        Log.d("imgggggggg",imageURL);
         shop.setShirtPrice(shirtPrice);
         shop.setTrouserPrice(trouserPrice);
 
         // we are use add value event listener method
         // which is called with database reference.
-        String Skey = databaseReference.push().getKey();
-        databaseReference.child(Skey).setValue(shop).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                // after adding this data we are showing toast message.
-                Toast.makeText(context, "data added", Toast.LENGTH_SHORT).show();
-            }
+        String Skey = shopDatabaseReference.push().getKey();
+        assert Skey != null;
+        shopDatabaseReference.child(Skey).setValue(shop).addOnSuccessListener(unused -> {
+            // after adding this data we are showing toast message.
+
+            //shopID stored in tailor table
+            tailorDatabaseReference = firebaseDatabase.getReference().child("users");
+            tailorDatabaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("ShopID").setValue(Skey);
+
+            Toast.makeText(context, "data added", Toast.LENGTH_SHORT).show();
+//            startActivity(new Intent(getActivity(),TailorMainActivity.class));
         });
 
 

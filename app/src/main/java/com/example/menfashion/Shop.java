@@ -1,13 +1,9 @@
 package com.example.menfashion;
 
 public class Shop {
-    public String sname;
-    public String address;
-    public String logo;
-    public String shirtPrice;
-    public String trouserPrice;
+    String sname, address, logo, shirtPrice, trouserPrice;
 
-    public Shop(){
+    Shop(){
 
     }
 

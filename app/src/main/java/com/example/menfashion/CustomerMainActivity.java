@@ -1,35 +1,49 @@
 package com.example.menfashion;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class CustomerMainActivity extends AppCompatActivity {
+
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_main);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-//        Shop shop=new Shop();
+        bottomNavigationView = findViewById(R.id.nav_view);
 
-//        MyMovieData[] myMovieData = new MyMovieData[]{
-//                new MyMovieData("Avengers","2019 film",R.drawable.avenger),
-//                new MyMovieData("Venom","2018 film",R.drawable.venom),
-//                new MyMovieData("Batman Begins","2005 film",R.drawable.batman),
-//                new MyMovieData("Jumanji","2019 film",R.drawable.avatar),
-//                new MyMovieData("Good Deeds","2012 film",R.drawable.good_deeds),
-//                new MyMovieData("Hulk","2003 film",R.drawable.hulk),
-//                new MyMovieData("Avatar","2009 film",R.drawable.avatar),
-//        };
-//
-//        MyMovieAdapter myMovieAdapter = new MyMovieAdapter(myMovieData,Home.this);
-//        recyclerView.setAdapter(myMovieAdapter);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.navigation_home:
+                                startActivity(new Intent(getApplicationContext(), CustomerHomeActivity.class));
+                                return true;
+                            case R.id.navigation_order:
+                                startActivity(new Intent(getApplicationContext(), CustomerOrderActivity.class));
+                                return true;
+                            case R.id.navigation_account:
+                                startActivity(new Intent(getApplicationContext(), CustomerAccountActivity.class));
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startActivity(new Intent(getApplicationContext(),CustomerHomeActivity.class));
     }
 }
