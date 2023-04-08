@@ -25,7 +25,7 @@
         />
 
     <include
-        layout="@layout/activity_customer_nav_bar_layout"
+        layout="@layout/activity_tailor_nav_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/navBar"

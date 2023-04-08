@@ -1,7 +1,7 @@
 package com.example.menfashion;
 
 import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,8 +17,6 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.storage.FirebaseStorage;
-
-import java.util.ArrayList;
 
 public class ShopAdapter extends FirebaseRecyclerAdapter<Shop,ShopAdapter.shopViewHolder> {
 
@@ -32,21 +31,32 @@ public class ShopAdapter extends FirebaseRecyclerAdapter<Shop,ShopAdapter.shopVi
     protected void onBindViewHolder(@NonNull shopViewHolder holder, int position, @NonNull Shop shop) {
         holder.sName.setText(shop.getSname());
         holder.cShirt.setText(String.format("₹%s", shop.getShirtPrice()));
-        holder.cTrouser.setText(String.format("₹%s", shop.getTrouserPrice()));//TODO
+        holder.cTrouser.setText(String.format("₹%s", shop.getTrouserPrice()));
         FirebaseStorage.getInstance().getReferenceFromUrl(shop.getLogo()).getDownloadUrl().addOnSuccessListener(
                 uri -> Glide.with(holder.logo.getContext()).load(uri).into(holder.logo));
 
         holder.card.setOnClickListener(v -> {
-            Intent intent1 = new Intent(sContext,ShirtOrTrouser.class);
+            AppCompatActivity activity = (AppCompatActivity) v.getContext();
+            ShirtOrTrouserFragment shirtOrTrouserFragment=new ShirtOrTrouserFragment();
+            Bundle bundle=new Bundle();
+            bundle.putString("sname",shop.sname);
+            bundle.putString("address",shop.address);
+            bundle.putString("shirtPrice",shop.shirtPrice);
+            bundle.putString("trouserPrice",shop.trouserPrice);
 
-            ArrayList<String> shop_data=new ArrayList<String>();
-            shop_data.add(shop.sname);
-            shop_data.add(shop.address);
-            shop_data.add(shop.shirtPrice);
-            shop_data.add(shop.trouserPrice);
+            shirtOrTrouserFragment.setArguments(bundle);
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,shirtOrTrouserFragment).addToBackStack(null).commit();
 
-            intent1.putStringArrayListExtra("shop_data", shop_data);
-            sContext.startActivity(intent1);
+//            Intent intent1 = new Intent(sContext,ShirtOrTrouserFragment.class);//TODO
+
+//            ArrayList<String> shop_data=new ArrayList<String>();
+//            shop_data.add(shop.sname);
+//            shop_data.add(shop.address);
+//            shop_data.add(shop.shirtPrice);
+//            shop_data.add(shop.trouserPrice);
+
+//            intent1.putStringArrayListExtra("shop_data", shop_data);
+//            sContext.startActivity(intent1);
 
         });
     }

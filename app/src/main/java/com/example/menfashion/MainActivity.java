@@ -1,14 +1,14 @@
 package com.example.menfashion;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,14 +32,14 @@ public class MainActivity extends AppCompatActivity {
         ll_newCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(MainActivity.this, AddNewCustomerActivity.class));//TODO
+                //startActivity(new Intent(MainActivity.this, AddNewCustomerActivity.class));
             }
         });
 
         ll_searchCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  startActivity(new Intent(MainActivity.this, SearchCustomerActivity.class));//TODO
+              //  startActivity(new Intent(MainActivity.this, SearchCustomerActivity.class));
             }
         });
 

@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+//    id 'androidx.navigation.safeargs'//nav
 }
 
 android {
@@ -35,7 +36,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.firebase:firebase-storage:20.1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -47,18 +47,25 @@ dependencies {
     //image display
     implementation 'com.github.bumptech.glide:glide:4.13.2'
 
-//    //circular image
-//    implementation 'de.hdodenhof:circleimageview:3.1.0'
-
     //lottie
     implementation "com.airbnb.android:lottie:3.6.0"
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
     implementation 'com.firebaseui:firebase-ui-database:7.2.0'
-    implementation 'com.google.firebase:firebase-auth:21.1.0'
+    implementation 'com.google.firebase:firebase-auth:21.2.0'
+    implementation 'com.google.firebase:firebase-storage:20.1.0'
     implementation 'com.google.firebase:firebase-database:20.1.0'
 
     //multidex
     implementation 'androidx.multidex:multidex:2.0.1'
+
+    //fragment
+    implementation 'androidx.fragment:fragment:1.5.6'
+
+//    def nav_version = "2.5.3"
+//
+//    // Java language implementation
+//    implementation "androidx.navigation:navigation-fragment:$nav_version"//nav
+//    implementation "androidx.navigation:navigation-ui:$nav_version"//nav
 }
