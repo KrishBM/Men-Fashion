@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class RegistrationActivity extends AppCompatActivity implements PopupDialog.PopupDialogListener{
+public class RegistrationActivity extends AppCompatActivity implements AddShopDialog.PopupDialogListener{
 
     int allDone = 0;
     private EditText nameTextView,numberTextView,emailTextView, passwordTextView, passwordTextView2;
@@ -261,12 +261,12 @@ public class RegistrationActivity extends AppCompatActivity implements PopupDial
         bundle.putString("number",number);
         bundle.putString("role",switchStr);
 
-        PopupDialog popupDialog=new PopupDialog();
-        popupDialog.setArguments(bundle);
+        AddShopDialog addShopDialog =new AddShopDialog();
+        addShopDialog.setArguments(bundle);
 //        transaction.replace(R.id.fragment_single, fragInfo);
 //        transaction.commit();
 
-        popupDialog.show(getSupportFragmentManager(),"example dialog");
+        addShopDialog.show(getSupportFragmentManager(),"example dialog");
     }
 
     private void stopProgress() {

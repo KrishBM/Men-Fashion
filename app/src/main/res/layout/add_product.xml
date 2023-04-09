@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:background="#D4ECE8"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#D4ECE8"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -19,78 +20,84 @@ android:background="#D4ECE8"
 <!--        android:textSize="24dp" />-->
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/shop_name_L"
-        android:layout_below="@+id/txt_createShop_R"
+        android:id="@+id/fabric_type_L"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/shop_name"
+            android:id="@+id/fabric_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/white"
-            android:hint="Shop Name"
-            android:inputType="textPersonName"
+            android:hint="Fabric Type"
+            android:inputType="text"
             android:maxLines="1"
             android:singleLine="true"
+            android:fontFamily="@font/pop_light"
             android:textColor="@color/colorPrimary" />
 
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/address_L"
+        android:id="@+id/fabric_color_L"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/shop_name_L">
+        android:layout_below="@+id/fabric_type_L">
 
         <EditText
-            android:id="@+id/address"
+            android:id="@+id/fabric_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/white"
-            android:hint="Address"
-            android:inputType="textMultiLine"
-            android:lines="3"
+            android:hint="Fabric color"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:fontFamily="@font/pop_light"
             android:textColor="@color/colorPrimary" />
 
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/shirt_price_L"
+        android:id="@+id/fabric_price_L"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/address_L">
+        android:layout_below="@+id/fabric_color_L">
 
         <EditText
-            android:id="@+id/shirt_price"
+            android:id="@+id/fabric_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/white"
-            android:hint="Shirt(Price)"
+            android:hint="Fabric Price"
+            android:fontFamily="@font/pop_light"
             android:inputType="number"
             android:maxLines="1"
             android:singleLine="true"
             android:textColor="@color/colorPrimary" />
 
     </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/trouser_price_L"
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/shirt_price_L">
+        android:layout_below="@id/fabric_price_L"
+        android:fontFamily="@font/pop_light"
+        android:text="Currently Available?"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="4dp"/>
 
-        <EditText
-            android:id="@+id/trouser_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/white"
-            android:hint="Trouser(Price)"
-            android:inputType="number"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textColor="@color/colorPrimary" />
+    <Switch
+        android:id="@+id/availableSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/fabric_price_L"
+        android:checked="true"
+        android:textOff="Off"
+        android:textOn="On"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-    </com.google.android.material.textfield.TextInputLayout>
     <ImageView
-        android:layout_below="@+id/trouser_price_L"
+        android:layout_below="@+id/availableSwitch"
         android:layout_marginTop="40dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -98,16 +105,18 @@ android:background="#D4ECE8"
 
     <Button
         android:layout_marginTop="40dp"
-        android:layout_below="@+id/trouser_price_L"
+        android:layout_below="@+id/availableSwitch"
         android:id="@+id/uploadButton"
         android:layout_width="match_parent"
+        android:textAlignment="textEnd"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/pop_medium"
         android:background="#00FFFFFF"
-        android:text="Upload Shop Logo" />
+        android:text="Upload Fabric Image" />
     <ImageView
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:id="@+id/logoView"
+        android:id="@+id/ImgView"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
         android:layout_below="@id/uploadButton"/>
