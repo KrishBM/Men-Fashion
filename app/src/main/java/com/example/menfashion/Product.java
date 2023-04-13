@@ -2,19 +2,26 @@ package com.example.menfashion;
 
 public class Product {
 
-    String fabricType, fabricColor, fabricImage, fabricPrice, fabricAvailable,currentTailorID;
+    String fabricType, fabricColor, fabricImage, fabricPrice, clothType, fabricAvailable,currentTailorID;
 
     Product(){
 
     }
 
-    public Product(String fabricType,String fabricColor, String fabricImage, String fabricPrice, String fabricAvailable, String currentTailorID){
+    public Product(String fabricType,String fabricColor, String fabricImage, String fabricPrice, String clothType, String fabricAvailable, String currentTailorID){
         this.fabricType=fabricType;
         this.fabricColor=fabricColor;
         this.fabricImage=fabricImage;
         this.fabricPrice=fabricPrice;
+        this.clothType=clothType;
         this.fabricAvailable=fabricAvailable;
         this.currentTailorID=currentTailorID;
+    }
+
+    public String getClothType() { return clothType; }
+
+    public void setClothType(String clothType) {
+        this.clothType = clothType;
     }
 
     public String getFabricType() {

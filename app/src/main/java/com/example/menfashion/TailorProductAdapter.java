@@ -24,16 +24,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
-public class ProductAdapter extends FirebaseRecyclerAdapter<Product,ProductAdapter.productViewHolder> {
+public class TailorProductAdapter extends FirebaseRecyclerAdapter<Product, TailorProductAdapter.productViewHolder> {
     Context sContext;
-    public ProductAdapter(@NonNull FirebaseRecyclerOptions<Product> options, Context context) {
+    public TailorProductAdapter(@NonNull FirebaseRecyclerOptions<Product> options, Context context) {
         super(options);
         sContext=context;
 
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ProductAdapter.productViewHolder holder, int position, @NonNull Product product) {
+    protected void onBindViewHolder(@NonNull TailorProductAdapter.productViewHolder holder, int position, @NonNull Product product) {
         holder.fType.setText(product.getFabricType());
         holder.fColor.setText(product.getFabricColor());
         holder.fPrice.setText(String.format("₹%s", product.getFabricPrice()));
@@ -105,9 +105,9 @@ public class ProductAdapter extends FirebaseRecyclerAdapter<Product,ProductAdapt
                 productDatabaseReference.child(getRef(position).getKey()).child("fabricAvailable").setValue(holder.Aswitch.getTextOff().toString());
         });
     }
-    public ProductAdapter.productViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.product_card,parent,false);
-        return new ProductAdapter.productViewHolder(view);
+    public TailorProductAdapter.productViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.tailor_product_card,parent,false);
+        return new TailorProductAdapter.productViewHolder(view);
     }
 
     class productViewHolder extends RecyclerView.ViewHolder{

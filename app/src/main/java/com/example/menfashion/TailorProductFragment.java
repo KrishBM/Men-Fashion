@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,14 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.FirebaseDatabase;
 
 
 public class TailorProductFragment extends Fragment {
 
-    ImageView addP;
+    FloatingActionButton addP;
     RecyclerView recyclerView;
-    ProductAdapter productAdapter;
+    TailorProductAdapter tailorProductAdapter;
 
     public TailorProductFragment() {
         // Required empty public constructor
@@ -53,8 +53,8 @@ public class TailorProductFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        productAdapter=new ProductAdapter(options,getContext());
-        recyclerView.setAdapter(productAdapter);
+        tailorProductAdapter =new TailorProductAdapter(options,getContext());
+        recyclerView.setAdapter(tailorProductAdapter);
     }
     private FirebaseRecyclerOptions<Product> dataInitialize() {
         return new FirebaseRecyclerOptions.Builder<Product>()
@@ -65,14 +65,14 @@ public class TailorProductFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        productAdapter.startListening();
+        tailorProductAdapter.startListening();
     }
 
 
     @Override
     public void onStop() {
         super.onStop();
-        productAdapter.stopListening();
+        tailorProductAdapter.stopListening();
     }
 
 }

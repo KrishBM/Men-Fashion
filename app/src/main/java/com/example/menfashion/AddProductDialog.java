@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -45,7 +47,7 @@ public class AddProductDialog extends AppCompatDialogFragment {
     private Context context;
     // request code
     private final int PICK_IMAGE_REQUEST = 22;
-
+//    int selectedId=-1;
     FirebaseStorage storage;
     StorageReference storageReference;
     FirebaseAuth mAuth;
@@ -53,8 +55,10 @@ public class AddProductDialog extends AppCompatDialogFragment {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference productDatabaseReference;
 
+    RadioButton shirtRB,trouserRB;
+    RadioGroup radioGroup;
     Product product;
-    String imageURL="",fabricPrice,fabricType,fabricColor,fabricAvailability,CurrentTailorID;
+    String imageURL="",fabricPrice,fabricType,fabricColor,clothType,fabricAvailability,CurrentTailorID;
     Button uploadButton;
 
     @NonNull
@@ -66,6 +70,8 @@ public class AddProductDialog extends AppCompatDialogFragment {
 
         ImgView=view.findViewById(R.id.ImgView);
 
+        shirtRB=view.findViewById(R.id.radioShirt);
+        trouserRB=view.findViewById(R.id.radioTrouser);
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         productDatabaseReference = firebaseDatabase.getReference().child("ProductData");
@@ -88,13 +94,24 @@ public class AddProductDialog extends AppCompatDialogFragment {
                 .setTitle("Add Product")
                 .setPositiveButton("ADD", (dialogInterface, i) -> {
 
+//                    selectedId = radioGroup.getCheckedRadioButtonId();
+//                    genderradioButton = view.findViewById(selectedId);
+
                     if(TextUtils.isEmpty(EfabricType.getText()) || TextUtils.isEmpty(EfabricColor.getText()) || TextUtils.isEmpty(EfabricPrice.getText())){
                         Toast.makeText(getContext(), "Fill All The Details...!!", Toast.LENGTH_SHORT).show();
                     }else if (ImgView.getVisibility()==View.GONE) {
                         Toast.makeText(getContext(), "Please upload image...!!", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else if (!shirtRB.isChecked() && !trouserRB.isChecked()) {
+                        Toast.makeText(getContext(), "Please select cloth type...!!", Toast.LENGTH_SHORT).show();
+                    } else {
 
 //                        if(uploadSuccesFlag.equals("s") && !(uploadImageURL.isEmpty())){
+                        if(shirtRB.isChecked()){
+                            clothType=shirtRB.getText().toString();
+                        }else {
+                            clothType=trouserRB.getText().toString();
+                        }
+
                         fabricType= EfabricType.getText().toString();
                         fabricColor= EfabricColor.getText().toString();
                         fabricPrice= EfabricPrice.getText().toString();
@@ -178,7 +195,7 @@ public class AddProductDialog extends AppCompatDialogFragment {
                         ref.getDownloadUrl().addOnSuccessListener(uri -> {
 //                            Log.d("imggggggggggggggggg",imageURL);
 
-                            addDatatoFirebase(fabricType,fabricColor,fabricPrice,fabricAvailability,imageURL,CurrentTailorID);//TODO
+                            addDatatoFirebase(fabricType,fabricColor,fabricPrice,clothType,fabricAvailability,imageURL,CurrentTailorID);//TODO
 //                                startActivity(new Intent(context,TailorMainActivity.class));
                         });
 
@@ -216,12 +233,13 @@ public class AddProductDialog extends AppCompatDialogFragment {
                 PICK_IMAGE_REQUEST);
     }
 
-    private void addDatatoFirebase(String fabricType,String fabricColor,String fabricPrice,String fabricAvailability,String imageURL,String CurrentTailorID) {
+    private void addDatatoFirebase(String fabricType,String fabricColor,String fabricPrice,String clothType,String fabricAvailability,String imageURL,String CurrentTailorID) {
         // below 3 lines of code is used to set
         // data in our object class.
         product.setFabricType(fabricType);
         product.setFabricColor(fabricColor);
         product.setFabricPrice(fabricPrice);
+        product.setClothType(clothType);
         product.setFabricAvailable(fabricAvailability);
         product.setFabricImage(imageURL);
         product.setCurrentTailorID(CurrentTailorID);

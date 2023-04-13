@@ -5,11 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -17,9 +16,12 @@ public class ShirtOrTrouserFragment extends Fragment {
 
     TextView shopNameTV, shirtChargeTV, trouserChargeTV;
     CardView shirtCard,trouserCard;
-    Toolbar toolbar;
+//    Bundle bundle;
+    AppCompatActivity activity;
+    Bundle bundle =new Bundle();
+//    Toolbar toolbar;
     String shopName,shirtCharge,trouserCharge,shopAddress;
-
+    CustomerChooseFabricFragment customerChooseFabricFragment;
     public ShirtOrTrouserFragment() {
         // Required empty public constructor
     }
@@ -40,47 +42,41 @@ public class ShirtOrTrouserFragment extends Fragment {
         trouserChargeTV =view.findViewById(R.id.currentTrouserCharge);
         shirtCard=view.findViewById(R.id.ShirtCard);
         trouserCard=view.findViewById(R.id.TrouserCard);
-        toolbar = view.findViewById(R.id.toolbar);
+//        toolbar = view.findViewById(R.id.toolbar);
+        activity = (AppCompatActivity) view.getContext();
+        customerChooseFabricFragment=new CustomerChooseFabricFragment();
 
         if(getArguments()!=null){
             shopName=getArguments().getString("sname");
             shopAddress=getArguments().getString("address");
             shirtCharge=getArguments().getString("shirtPrice");
             trouserCharge=getArguments().getString("trouserPrice");
-//            shopNameTV.setText(shopName);
-            ///////////////TODO
-            if(toolbar!=null) {
-                toolbar.setTitle(shopName);
-            }
-            //////////////////
+            ((CustomerMainActivity) getActivity()).setToolbarName(shopName); //toolbar name change(method is in CustomerMainActivity)
+
             shirtChargeTV.setText(shirtCharge);
             trouserChargeTV.setText(trouserCharge);
         }
 
-
-//        if (getIntent().hasExtra("shop_data")){
-//            ArrayList<String> shop_data=getIntent().getExtras().getStringArrayList("shop_data");
-//            shopName= shop_data.get(0);
-//            shopAddress= shop_data.get(1);
-//            shirtCharge= shop_data.get(2);
-//            trouserCharge=shop_data.get(3);
-//
-//            shopNameTV.setText(shopName);
-//            shirtChargeTV.setText(shirtCharge);
-//            trouserChargeTV.setText(trouserCharge);
-//        }
-
         shirtCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "shirtcard", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "shirtcard", Toast.LENGTH_SHORT).show();
+
+
+                bundle.putString("clothType","Shirt");
+                customerChooseFabricFragment.setArguments(bundle);
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,customerChooseFabricFragment).addToBackStack(null).commit();
+
             }
         });
 
         trouserCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"trousercard",Toast.LENGTH_SHORT).show();
+                bundle.putString("clothType","Trouser");
+                customerChooseFabricFragment.setArguments(bundle);
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,customerChooseFabricFragment).addToBackStack(null).commit();
+
             }
         });
     }

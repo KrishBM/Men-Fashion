@@ -75,22 +75,60 @@
             android:textColor="@color/colorPrimary" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
     <TextView
+        android:id="@+id/ClothTypetv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/fabric_price_L"
         android:fontFamily="@font/pop_light"
-        android:text="Currently Available?"
+        android:text="Cloth Type:"
+        android:textSize="16sp"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="4dp"/>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ClothTypetv"
+        android:id="@+id/radioGroup"
+
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <RadioButton
+            android:id="@+id/radioShirt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Shirt"
+            android:fontFamily="@font/pop_light"
+            android:checked="false"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/radioTrouser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Trouser"
+            android:fontFamily="@font/pop_light"
+            android:checked="false"
+            android:textSize="16sp" />
+    </RadioGroup>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radioGroup"
+        android:fontFamily="@font/pop_light"
+        android:text="Currently Available?"
+        android:layout_marginTop="15dp"
         android:layout_marginLeft="4dp"/>
 
     <Switch
         android:id="@+id/availableSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_below="@id/fabric_price_L"
+        android:layout_marginTop="13dp"
+        android:layout_below="@id/radioGroup"
         android:checked="true"
         android:textOff="Off"
         android:textOn="On"
