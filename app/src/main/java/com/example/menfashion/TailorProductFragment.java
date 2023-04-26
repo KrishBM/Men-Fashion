@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 
@@ -58,7 +59,7 @@ public class TailorProductFragment extends Fragment {
     }
     private FirebaseRecyclerOptions<Product> dataInitialize() {
         return new FirebaseRecyclerOptions.Builder<Product>()
-                .setQuery(FirebaseDatabase.getInstance().getReference().child("ProductData"), Product.class)
+                .setQuery(FirebaseDatabase.getInstance().getReference().child("ProductData").orderByChild("currentTailorID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid()), Product.class)
                 .build();
     }
 

@@ -43,20 +43,11 @@ public class ShopAdapter extends FirebaseRecyclerAdapter<Shop,ShopAdapter.shopVi
             bundle.putString("address",shop.address);
             bundle.putString("shirtPrice",shop.shirtPrice);
             bundle.putString("trouserPrice",shop.trouserPrice);
+            bundle.putString("sID",shop.sID);
+
 
             shirtOrTrouserFragment.setArguments(bundle);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,shirtOrTrouserFragment).addToBackStack(null).commit();
-
-//            Intent intent1 = new Intent(sContext,ShirtOrTrouserFragment.class);//TODO
-
-//            ArrayList<String> shop_data=new ArrayList<String>();
-//            shop_data.add(shop.sname);
-//            shop_data.add(shop.address);
-//            shop_data.add(shop.shirtPrice);
-//            shop_data.add(shop.trouserPrice);
-
-//            intent1.putStringArrayListExtra("shop_data", shop_data);
-//            sContext.startActivity(intent1);
 
         });
     }

@@ -1,6 +1,7 @@
 package com.example.menfashion;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -22,11 +22,8 @@ import java.util.List;
 
 public class CustomerChooseFabricFragment extends Fragment {
 
-    private Query productQuery;
     RecyclerView recyclerView;
-    String clothType;
-    CustomerProductAdapter customerProductAdapter;
-
+    String clothType,shopName,shopId,currentTailorID;
     public CustomerChooseFabricFragment() {
         // Required empty public constructor
     }
@@ -44,33 +41,58 @@ public class CustomerChooseFabricFragment extends Fragment {
 
         if(getArguments()!=null) {
             clothType = getArguments().getString("clothType");
+            shopName=getArguments().getString("shopName");
+            shopId=getArguments().getString("sID");
+
+            ((CustomerMainActivity) getActivity()).setToolbarName(shopName+": "+clothType);
 //            Log.d("clothTypeeeeeeeeeeeeeeeee1",clothType);
         }
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        dataInitialize1();
+        //for currentTailorID
+//        Log.d("ShopIDDDDDDDD",shopId);
+        FirebaseDatabase.getInstance().getReference().child("users").orderByChild("ShopID").equalTo(shopId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    currentTailorID=dataSnapshot.getKey();
+//                    Log.d("tailorIDDDDDDDDDDD",currentTailorID);
+                }
+                if(!currentTailorID.isEmpty()){
+                    dataInitialize1();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Firebase(tailorID)", "Error: " + error.getMessage());
+            }
+        });
+
 
     }
 
     private void dataInitialize1() {
-        FirebaseDatabase.getInstance().getReference().child("ProductData").orderByChild("clothType").equalTo(clothType).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("ProductData").orderByChild("currentTailorID").equalTo(currentTailorID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<Product> productList = new ArrayList<>();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Product product = dataSnapshot.getValue(Product.class);
-                    productList.add(product);
+                    if(product.getClothType().equals(clothType)){
+                        productList.add(product);
+                    }
                 }
-                recyclerView.setAdapter(new CustomerProductAdapter(productList, getContext()));
+                recyclerView.setAdapter(new CustomerProductAdapter(productList,clothType, getContext()));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.e("Firebase", "Error: " + error.getMessage());
             }
         });
     }
 
-}
+}//TODO TODO

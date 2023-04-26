@@ -1,7 +1,7 @@
 package com.example.menfashion;
 
 public class Shop {
-    String sname, address, logo, shirtPrice, trouserPrice;
+    String sname, address, logo, shirtPrice, trouserPrice, sID;
 
     Shop(){
 
@@ -13,6 +13,14 @@ public class Shop {
         this.logo=logo;
         this.shirtPrice=shirtPrice;
         this.trouserPrice=trouserPrice;
+    }
+
+    public String getsID() {
+        return sID;
+    }
+
+    public void setsID(String sID) {
+        this.sID = sID;
     }
 
     public String getSname() {

@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -56,8 +55,6 @@ public class AddProductDialog extends AppCompatDialogFragment {
     DatabaseReference productDatabaseReference;
 
     RadioButton shirtRB,trouserRB;
-    RadioGroup radioGroup;
-    Product product;
     String imageURL="",fabricPrice,fabricType,fabricColor,clothType,fabricAvailability,CurrentTailorID;
     Button uploadButton;
 
@@ -77,8 +74,6 @@ public class AddProductDialog extends AppCompatDialogFragment {
         productDatabaseReference = firebaseDatabase.getReference().child("ProductData");
 
         CurrentTailorID=FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        product = new Product();
 
         availableSwitch=view.findViewById(R.id.availableSwitch);
         EfabricType=view.findViewById(R.id.fabric_type);
@@ -236,14 +231,8 @@ public class AddProductDialog extends AppCompatDialogFragment {
     private void addDatatoFirebase(String fabricType,String fabricColor,String fabricPrice,String clothType,String fabricAvailability,String imageURL,String CurrentTailorID) {
         // below 3 lines of code is used to set
         // data in our object class.
-        product.setFabricType(fabricType);
-        product.setFabricColor(fabricColor);
-        product.setFabricPrice(fabricPrice);
-        product.setClothType(clothType);
-        product.setFabricAvailable(fabricAvailability);
-        product.setFabricImage(imageURL);
-        product.setCurrentTailorID(CurrentTailorID);
 
+        Product product = new Product(fabricType,fabricColor,imageURL,fabricPrice,clothType,fabricAvailability,CurrentTailorID);
 
         // we are use add value event listener method
         // which is called with database reference.

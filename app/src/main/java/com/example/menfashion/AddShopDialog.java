@@ -51,7 +51,7 @@ public class AddShopDialog extends AppCompatDialogFragment {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference shopDatabaseReference,tailorDatabaseReference;
 
-    Shop shop;
+
     String name,imageURL="",trouserPrice,number,shirtPrice,email,address,password,role,shopName;
     Button uploadButton;
 
@@ -75,7 +75,7 @@ public class AddShopDialog extends AppCompatDialogFragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         shopDatabaseReference = firebaseDatabase.getReference().child("ShopData");
 
-        shop = new Shop();
+
 
         EshopName=view.findViewById(R.id.shop_name);
         Eaddress=view.findViewById(R.id.address);
@@ -216,12 +216,8 @@ public class AddShopDialog extends AppCompatDialogFragment {
     private void addDatatoFirebase(String shopName, String address, String imageURL,String shirtPrice,String trouserPrice) {
         // below 3 lines of code is used to set
         // data in our object class.
-        shop.setSname(shopName);
-        shop.setAddress(address);
-        shop.setLogo(imageURL);
-//        Log.d("imgggggggg",imageURL);
-        shop.setShirtPrice(shirtPrice);
-        shop.setTrouserPrice(trouserPrice);
+
+        Shop shop=new Shop(shopName,address,imageURL,shirtPrice,trouserPrice);
 
         // we are use add value event listener method
         // which is called with database reference.

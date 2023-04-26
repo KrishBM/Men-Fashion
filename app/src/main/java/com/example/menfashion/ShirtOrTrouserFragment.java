@@ -14,13 +14,13 @@ import androidx.fragment.app.Fragment;
 
 public class ShirtOrTrouserFragment extends Fragment {
 
-    TextView shopNameTV, shirtChargeTV, trouserChargeTV;
+    TextView shirtChargeTV, trouserChargeTV;
     CardView shirtCard,trouserCard;
 //    Bundle bundle;
     AppCompatActivity activity;
-    Bundle bundle =new Bundle();
+
 //    Toolbar toolbar;
-    String shopName,shirtCharge,trouserCharge,shopAddress;
+    String shopName,shirtCharge,trouserCharge,shopAddress,shopId;
     CustomerChooseFabricFragment customerChooseFabricFragment;
     public ShirtOrTrouserFragment() {
         // Required empty public constructor
@@ -51,6 +51,12 @@ public class ShirtOrTrouserFragment extends Fragment {
             shopAddress=getArguments().getString("address");
             shirtCharge=getArguments().getString("shirtPrice");
             trouserCharge=getArguments().getString("trouserPrice");
+            shopId=getArguments().getString("sID");
+
+//            FirebaseDatabase.getInstance().getReference().child("users").orderByChild("role").equalTo("tailor").orderByChild("ShopID").equalTo(shopId).get
+
+
+
             ((CustomerMainActivity) getActivity()).setToolbarName(shopName); //toolbar name change(method is in CustomerMainActivity)
 
             shirtChargeTV.setText(shirtCharge);
@@ -61,9 +67,11 @@ public class ShirtOrTrouserFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(getContext(), "shirtcard", Toast.LENGTH_SHORT).show();
-
-
+                Bundle bundle =new Bundle();
                 bundle.putString("clothType","Shirt");
+                bundle.putString("shopName",shopName);
+                bundle.putString("sID",shopId);
+
                 customerChooseFabricFragment.setArguments(bundle);
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,customerChooseFabricFragment).addToBackStack(null).commit();
 
@@ -73,7 +81,11 @@ public class ShirtOrTrouserFragment extends Fragment {
         trouserCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle =new Bundle();
                 bundle.putString("clothType","Trouser");
+                bundle.putString("shopName",shopName);
+                bundle.putString("sID",shopId);
+
                 customerChooseFabricFragment.setArguments(bundle);
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,customerChooseFabricFragment).addToBackStack(null).commit();
 

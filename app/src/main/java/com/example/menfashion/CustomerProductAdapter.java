@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,9 +19,11 @@ import java.util.List;
 
 public class CustomerProductAdapter extends RecyclerView.Adapter<CustomerProductAdapter.productViewHolder> {
     List<Product> sProduct;
+    String sClothType;
     Context sContext;
-    public CustomerProductAdapter(@NonNull List<Product> products, Context context) {
+    public CustomerProductAdapter(@NonNull List<Product> products,String clothType, Context context) {
         sProduct=products;
+        sClothType=clothType;
         sContext=context;
 
     }
@@ -33,10 +35,12 @@ public class CustomerProductAdapter extends RecyclerView.Adapter<CustomerProduct
 
     @Override
     public void onBindViewHolder(@NonNull productViewHolder holder, int position) {
+
         Product product = sProduct.get(position);
         holder.fType.setText(product.getFabricType());
         holder.fColor.setText(product.getFabricColor());
         holder.fPrice.setText(String.format("₹%s", product.getFabricPrice()));
+
 //        Log.d("dataaaaaaaaaaa",product.getFabricType());
 
         FirebaseStorage.getInstance().getReferenceFromUrl(product.getFabricImage()).getDownloadUrl().addOnSuccessListener(
@@ -44,7 +48,43 @@ public class CustomerProductAdapter extends RecyclerView.Adapter<CustomerProduct
 
         holder.card.setOnClickListener(v -> {
             //measurement
-            Toast.makeText(sContext.getApplicationContext(), "card",Toast.LENGTH_SHORT).show();
+            AppCompatActivity activity = (AppCompatActivity) v.getContext();
+            if(sClothType.equals("Shirt")){
+                ShirtMeasurementFragment shirtMeasurementFragment=new ShirtMeasurementFragment();
+//                shirtMeasurementFragment.setArguments(bundle);
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,shirtMeasurementFragment).addToBackStack(null).commit();
+
+            }else {
+                TrouserMeasurementFragment trouserMeasurementFragment=new TrouserMeasurementFragment();
+//                trouserMeasurementFragment.setArguments(bundle);
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,trouserMeasurementFragment).addToBackStack(null).commit();
+            }
+
+//            Bundle bundle=new Bundle();
+//            FirebaseDatabase.getInstance().getReference().child("ProductData").orderByChild("fabricImage").equalTo(product.getFabricImage()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    String currentFabricId=snapshot.getKey();
+//                    Log.d("currentFabricId",currentFabricId);
+//                    bundle.putString("fabricId", currentFabricId);
+//                    if(sClothType.equals("Shirt")){
+//                        ShirtMeasurementFragment shirtMeasurementFragment=new ShirtMeasurementFragment();
+//                        shirtMeasurementFragment.setArguments(bundle);
+//                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,shirtMeasurementFragment).addToBackStack(null).commit();
+//
+//                    }else {
+//                        TrouserMeasurementFragment trouserMeasurementFragment=new TrouserMeasurementFragment();
+//                        trouserMeasurementFragment.setArguments(bundle);
+//                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,trouserMeasurementFragment).addToBackStack(null).commit();
+//                    }
+//                }//TODO: error
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
+
         });
     }
 

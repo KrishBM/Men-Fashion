@@ -33,7 +33,7 @@ public class CustomerHomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FirebaseRecyclerOptions<Shop> options=dataInitialize();
+        FirebaseRecyclerOptions<Shop> options=dataInitialize();//TODO
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -41,13 +41,19 @@ public class CustomerHomeFragment extends Fragment {
 
         shopAdapter=new ShopAdapter(options,getContext());
         recyclerView.setAdapter(shopAdapter);
+
     }
 
     private FirebaseRecyclerOptions<Shop> dataInitialize() {
         return new FirebaseRecyclerOptions.Builder<Shop>()
-                .setQuery(FirebaseDatabase.getInstance().getReference().child("ShopData"), Shop.class)
+                .setQuery(FirebaseDatabase.getInstance().getReference().child("ShopData"), snapshot -> {
+                    Shop shop=snapshot.getValue(Shop.class);
+                    shop.setsID(snapshot.getKey());
+                    return shop;
+                })
                 .build();
     }
+
 
     @Override
     public void onStart() {

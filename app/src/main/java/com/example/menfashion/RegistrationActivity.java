@@ -20,11 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationActivity extends AppCompatActivity implements AddShopDialog.PopupDialogListener{
@@ -176,51 +176,75 @@ public class RegistrationActivity extends AppCompatActivity implements AddShopDi
 
                                 FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                                DatabaseReference refEmail = FirebaseDatabase.getInstance().getReference();
-                                DatabaseReference finalEmail = refEmail.child("users").child(currentUser.getUid()).child("email");
-                                finalEmail.setValue(email);
+                                User user=new User(email,password,name,number,switchStr);
+                                FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
 
-                                DatabaseReference refPass = FirebaseDatabase.getInstance().getReference();
-                                DatabaseReference finalPass = refPass.child("users").child(currentUser.getUid()).child("password");
-                                finalPass.setValue(password);
+                                        stopProgress();
 
-                                DatabaseReference refName = FirebaseDatabase.getInstance().getReference();
-                                DatabaseReference finalName = refName.child("users").child(currentUser.getUid()).child("name");
-                                finalName.setValue(name);
-
-                                DatabaseReference refNumber = FirebaseDatabase.getInstance().getReference();
-                                DatabaseReference finalNumber = refNumber.child("users").child(currentUser.getUid()).child("number");
-                                finalNumber.setValue(number);
-
-                                DatabaseReference refRole = FirebaseDatabase.getInstance().getReference();
-                                DatabaseReference finalRole = refRole.child("users").child(currentUser.getUid()).child("role");
-                                finalRole.setValue(switchStr);
-
-                                Toast.makeText(getApplicationContext(),
-                                                "Registration successful!",
-                                                Toast.LENGTH_LONG)
-                                        .show();
-
-                                // hide the progress bar
-                                stopProgress();
-
-                                if(switchStr.equals("tailor")){
-                                    openDialog(name,number,email,password);
+                                        if(switchStr.equals("tailor")){
+                                            openDialog(name,number,email,password);
 
 //                                    startActivity(new Intent(getApplicationContext(),TailorMainActivity.class));
-                                }else{
-                                    //Customer
-                                    startActivity(new Intent(getApplicationContext(),CustomerMainActivity.class));
-                                }
+                                        }else{
+                                            //Customer
+                                            startActivity(new Intent(getApplicationContext(),CustomerMainActivity.class));
+                                        }
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // if the user created intent to login activity
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                // if the user created intent to login activity
 //                                        startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
 //                                        finish();
+                                            }
+                                        }, 1000);
                                     }
-                                }, 1000);
+                                });
+//                                DatabaseReference refEmail = FirebaseDatabase.getInstance().getReference();
+//                                DatabaseReference finalEmail = refEmail.child("users").child(currentUser.getUid()).child("email");
+//                                finalEmail.setValue(email);
+//
+//                                DatabaseReference refPass = FirebaseDatabase.getInstance().getReference();
+//                                DatabaseReference finalPass = refPass.child("users").child(currentUser.getUid()).child("password");
+//                                finalPass.setValue(password);
+//
+//                                DatabaseReference refName = FirebaseDatabase.getInstance().getReference();
+//                                DatabaseReference finalName = refName.child("users").child(currentUser.getUid()).child("name");
+//                                finalName.setValue(name);
+//
+//                                DatabaseReference refNumber = FirebaseDatabase.getInstance().getReference();
+//                                DatabaseReference finalNumber = refNumber.child("users").child(currentUser.getUid()).child("number");
+//                                finalNumber.setValue(number);
+//
+//                                DatabaseReference refRole = FirebaseDatabase.getInstance().getReference();
+//                                DatabaseReference finalRole = refRole.child("users").child(currentUser.getUid()).child("role");
+//                                finalRole.setValue(switchStr);
+//
+//                                Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
+
+                                // hide the progress bar
+//                                stopProgress();
+//
+//                                if(switchStr.equals("tailor")){
+//                                    openDialog(name,number,email,password);
+//
+////                                    startActivity(new Intent(getApplicationContext(),TailorMainActivity.class));
+//                                }else{
+//                                    //Customer
+//                                    startActivity(new Intent(getApplicationContext(),CustomerMainActivity.class));
+//                                }
+//
+//                                new Handler().postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        // if the user created intent to login activity
+////                                        startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+////                                        finish();
+//                                    }
+//                                }, 1000);
 
                             } else {
 
@@ -237,20 +261,9 @@ public class RegistrationActivity extends AppCompatActivity implements AddShopDi
                             }
                         }
                     });
-
-//            if(switchStr.equals("tailor")){
-//                openDialog(name,number,email,password);
-//            }else{
-//                //Customer
-//                startActivity(new Intent(getApplicationContext(),CustomerMainActivity.class));
-//            }
-
-            //////
         } else {
             stopProgress();
         }
-
-
     }
 
     public void openDialog(String name,String number,String email,String password) {
@@ -263,8 +276,6 @@ public class RegistrationActivity extends AppCompatActivity implements AddShopDi
 
         AddShopDialog addShopDialog =new AddShopDialog();
         addShopDialog.setArguments(bundle);
-//        transaction.replace(R.id.fragment_single, fragInfo);
-//        transaction.commit();
 
         addShopDialog.show(getSupportFragmentManager(),"example dialog");
     }
