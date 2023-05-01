@@ -5,6 +5,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class TailorMainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +23,7 @@ public class TailorMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tailor_main);
 
         bottomNavigationView = findViewById(R.id.nav_view);
-
+        toolbar = findViewById(R.id.toolbar);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -52,5 +54,10 @@ public class TailorMainActivity extends AppCompatActivity {
             fragmentTransaction.addToBackStack(null);
         }
         fragmentTransaction.commit();
+    }
+    public void setToolbarName(String name){
+        if(toolbar!=null) {
+            toolbar.setTitle(name);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.menfashion;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,7 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,8 +32,9 @@ public class TrouserMeasurementFragment extends Fragment {
 
     EditText waistBeltET, frontRiseET, inseamET, outseamET, seatET, thighET, kneeET, heapET, backRiseET, hemET;
     String waistBelt, frontRise, inseam, outseam, seat, thigh, knee, heap, backRise, hem;
-    String clothType="Trouser",currentCustomerID;
+    String productID,fabricPrice,tailorCharge,clothType,shopId,currentCustomerID;
     DatabaseReference measurementRef=FirebaseDatabase.getInstance().getReference().child("Measurements");
+    DatabaseReference orderRef=FirebaseDatabase.getInstance().getReference().child("orders");
     Button submitTrouserMeasurement;
     public TrouserMeasurementFragment() {
         // Required empty public constructor
@@ -46,6 +50,17 @@ public class TrouserMeasurementFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if(getArguments()!=null) {
+            productID = getArguments().getString("productID");
+            fabricPrice=getArguments().getString("fabricPrice");
+            tailorCharge=getArguments().getString("tailorCharge");
+            clothType=getArguments().getString("clothType");
+            shopId=getArguments().getString("shopId");
+
+            ((CustomerMainActivity) getActivity()).setToolbarName(clothType+" Measurement");
+//            Log.d("clothTypeeeeeeeeeeeeeeeee1",clothType);
+        }
 
         waistBeltET=view.findViewById(R.id.waistBeltET);
         frontRiseET=view.findViewById(R.id.frontRiseET);
@@ -107,9 +122,21 @@ public class TrouserMeasurementFragment extends Fragment {
                 TrouserMeasurement trouserMeasurement=new TrouserMeasurement(clothType, currentCustomerID, waistBelt, frontRise, inseam, outseam, seat, thigh, knee, heap, backRise, hem);
 
                 measurementRef.child(id).setValue(trouserMeasurement).addOnSuccessListener(unused -> {
-                    Toast.makeText(getContext(), "data added", Toast.LENGTH_SHORT).show();
+                    FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("measurementTrouserID").setValue(id);
+
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(getResources().getString(R.string.dateFormate));
+
+                    String orderedDate=sdf.format(new Date());
+                    Order order=new Order(productID,fabricPrice,tailorCharge,id,clothType,shopId,currentCustomerID,orderedDate,null,"requested");
+                    String currentOrderID=orderRef.push().getKey();
+                    orderRef.child(currentOrderID).setValue(order).addOnSuccessListener(unused1 -> {
+                        DatabaseReference orderIDsRef=FirebaseDatabase.getInstance().getReference().child("ShopData").child(shopId).child("orderIDs");
+                        orderIDsRef.child(orderIDsRef.push().getKey()).setValue(currentOrderID);
+                        Toast.makeText(getContext(), "Cloth ordered..", Toast.LENGTH_SHORT).show();
+                    });
+
                 });
-                FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("measurementTrouserID").setValue(id);
+
             }
         });
     }

@@ -53,43 +53,33 @@ public class ShirtOrTrouserFragment extends Fragment {
             trouserCharge=getArguments().getString("trouserPrice");
             shopId=getArguments().getString("sID");
 
-//            FirebaseDatabase.getInstance().getReference().child("users").orderByChild("role").equalTo("tailor").orderByChild("ShopID").equalTo(shopId).get
-
-
-
             ((CustomerMainActivity) getActivity()).setToolbarName(shopName); //toolbar name change(method is in CustomerMainActivity)
 
             shirtChargeTV.setText(shirtCharge);
             trouserChargeTV.setText(trouserCharge);
         }
 
-        shirtCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Toast.makeText(getContext(), "shirtcard", Toast.LENGTH_SHORT).show();
-                Bundle bundle =new Bundle();
-                bundle.putString("clothType","Shirt");
-                bundle.putString("shopName",shopName);
-                bundle.putString("sID",shopId);
+        shirtCard.setOnClickListener(v -> {
+            Bundle bundle =new Bundle();
+            bundle.putString("clothType","Shirt");
+            bundle.putString("shopName",shopName);
+            bundle.putString("sID",shopId);
+            bundle.putString("tailorCharge",shirtCharge);
 
-                customerChooseFabricFragment.setArguments(bundle);
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,customerChooseFabricFragment).addToBackStack(null).commit();
+            customerChooseFabricFragment.setArguments(bundle);
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,customerChooseFabricFragment).addToBackStack(null).commit();
 
-            }
         });
 
-        trouserCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle =new Bundle();
-                bundle.putString("clothType","Trouser");
-                bundle.putString("shopName",shopName);
-                bundle.putString("sID",shopId);
+        trouserCard.setOnClickListener(v -> {
+            Bundle bundle =new Bundle();
+            bundle.putString("clothType","Trouser");
+            bundle.putString("shopName",shopName);
+            bundle.putString("sID",shopId);
+            bundle.putString("tailorCharge",trouserCharge);
+            customerChooseFabricFragment.setArguments(bundle);
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,customerChooseFabricFragment).addToBackStack(null).commit();
 
-                customerChooseFabricFragment.setArguments(bundle);
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,customerChooseFabricFragment).addToBackStack(null).commit();
-
-            }
         });
     }
 }

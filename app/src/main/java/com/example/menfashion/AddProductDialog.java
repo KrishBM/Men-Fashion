@@ -116,9 +116,6 @@ public class AddProductDialog extends AppCompatDialogFragment {
                             fabricAvailability = availableSwitch.getTextOff().toString();
 
                         uploadImage();
-
-//                        startActivity(new Intent(getActivity(),TailorMainActivity.class));//TODO
-
                     }
 
                 })
@@ -188,10 +185,9 @@ public class AddProductDialog extends AppCompatDialogFragment {
                         Toast.makeText(context, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
 
                         ref.getDownloadUrl().addOnSuccessListener(uri -> {
-//                            Log.d("imggggggggggggggggg",imageURL);
 
-                            addDatatoFirebase(fabricType,fabricColor,fabricPrice,clothType,fabricAvailability,imageURL,CurrentTailorID);//TODO
-//                                startActivity(new Intent(context,TailorMainActivity.class));
+                            addDatatoFirebase(fabricType,fabricColor,fabricPrice,clothType,fabricAvailability,imageURL,CurrentTailorID);
+
                         });
 
                     }).

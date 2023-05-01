@@ -2,7 +2,7 @@ package com.example.menfashion;
 
 public class Product {
 
-    String fabricType, fabricColor, fabricImage, fabricPrice, clothType, fabricAvailable,currentTailorID;
+    String id,fabricType, fabricColor, fabricImage, fabricPrice, clothType, fabricAvailable,currentTailorID;
 
     Product(){
 
@@ -16,6 +16,14 @@ public class Product {
         this.clothType=clothType;
         this.fabricAvailable=fabricAvailable;
         this.currentTailorID=currentTailorID;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getClothType() { return clothType; }

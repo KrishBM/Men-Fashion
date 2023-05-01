@@ -1,18 +1,27 @@
 package com.example.menfashion;
 
 public class Shop {
-    String sname, address, logo, shirtPrice, trouserPrice, sID;
+    String sname, address, logo, shirtPrice, trouserPrice, sID,shopAvailability;
 
     Shop(){
 
     }
 
-    public Shop(String sname,String address, String logo, String shirtPrice, String trouserPrice){
+    public Shop(String sname, String address, String shirtPrice, String trouserPrice, String shopAvailability, String logo){
         this.sname=sname;
         this.address=address;
-        this.logo=logo;
         this.shirtPrice=shirtPrice;
         this.trouserPrice=trouserPrice;
+        this.shopAvailability=shopAvailability;
+        this.logo=logo;
+    }
+
+    public String getShopAvailability() {
+        return shopAvailability;
+    }
+
+    public void setShopAvailability(String shopAvailability) {
+        this.shopAvailability = shopAvailability;
     }
 
     public String getsID() {

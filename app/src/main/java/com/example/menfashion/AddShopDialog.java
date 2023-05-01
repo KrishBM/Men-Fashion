@@ -2,6 +2,7 @@ package com.example.menfashion;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +42,8 @@ public class AddShopDialog extends AppCompatDialogFragment {
     // Uri indicates, where the image will be picked from
     private Uri filePath;
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    Switch availableSwitch;
     private Context context;
     // request code
     private final int PICK_IMAGE_REQUEST = 22;
@@ -52,9 +56,10 @@ public class AddShopDialog extends AppCompatDialogFragment {
     DatabaseReference shopDatabaseReference,tailorDatabaseReference;
 
 
-    String name,imageURL="",trouserPrice,number,shirtPrice,email,address,password,role,shopName;
+    String name,imageURL="",trouserPrice,number,shirtPrice,email,address,password,role,shopName,shopAvailability;
     Button uploadButton;
 
+    @SuppressLint("MissingInflatedId")
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -75,8 +80,7 @@ public class AddShopDialog extends AppCompatDialogFragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         shopDatabaseReference = firebaseDatabase.getReference().child("ShopData");
 
-
-
+        availableSwitch=view.findViewById(R.id.availableShopSwitch);
         EshopName=view.findViewById(R.id.shop_name);
         Eaddress=view.findViewById(R.id.address);
         EshirtPrice=view.findViewById(R.id.shirt_price);
@@ -100,6 +104,10 @@ public class AddShopDialog extends AppCompatDialogFragment {
                         shirtPrice= EshirtPrice.getText().toString();
                         trouserPrice= EtrouserPrice.getText().toString();
 
+                        if (availableSwitch.isChecked())
+                            shopAvailability = availableSwitch.getTextOn().toString();
+                        else
+                            shopAvailability = availableSwitch.getTextOff().toString();
 
                         uploadImage();
 
@@ -171,7 +179,7 @@ public class AddShopDialog extends AppCompatDialogFragment {
 
                         ref.getDownloadUrl().addOnSuccessListener(uri -> {
 //                            Log.d("imggggggggggggggggg",imageURL);
-                            addDatatoFirebase(shopName,address,imageURL,shirtPrice,trouserPrice);
+                            addDatatoFirebase(shopName,address,shirtPrice,trouserPrice,shopAvailability,imageURL);
 //                                startActivity(new Intent(context,TailorMainActivity.class));
                         });
 
@@ -213,11 +221,11 @@ public class AddShopDialog extends AppCompatDialogFragment {
                 PICK_IMAGE_REQUEST);
     }
 
-    private void addDatatoFirebase(String shopName, String address, String imageURL,String shirtPrice,String trouserPrice) {
+    private void addDatatoFirebase(String shopName, String address, String shirtPrice, String trouserPrice, String shopAvailability, String imageURL) {
         // below 3 lines of code is used to set
         // data in our object class.
 
-        Shop shop=new Shop(shopName,address,imageURL,shirtPrice,trouserPrice);
+        Shop shop=new Shop(shopName,address,shirtPrice,trouserPrice,shopAvailability,imageURL);
 
         // we are use add value event listener method
         // which is called with database reference.

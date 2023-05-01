@@ -34,6 +34,7 @@ public class TailorAccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ((TailorMainActivity) getActivity()).setToolbarName("Modification");
         buttonLogOut = view.findViewById(R.id.buttonLogOut);
         //signOut
         buttonLogOut.setOnClickListener(new View.OnClickListener() {

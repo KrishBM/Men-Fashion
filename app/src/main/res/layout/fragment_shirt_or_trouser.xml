@@ -93,7 +93,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
-                    android:src="@drawable/pant" />
+                    android:src="@drawable/trouser" />
 
                 <LinearLayout
                     android:gravity="center"

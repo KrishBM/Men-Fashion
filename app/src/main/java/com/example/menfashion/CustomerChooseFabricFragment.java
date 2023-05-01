@@ -23,7 +23,7 @@ import java.util.List;
 public class CustomerChooseFabricFragment extends Fragment {
 
     RecyclerView recyclerView;
-    String clothType,shopName,shopId,currentTailorID;
+    String clothType,shopName,shopId,tailorCharge,currentTailorID;
     public CustomerChooseFabricFragment() {
         // Required empty public constructor
     }
@@ -43,6 +43,7 @@ public class CustomerChooseFabricFragment extends Fragment {
             clothType = getArguments().getString("clothType");
             shopName=getArguments().getString("shopName");
             shopId=getArguments().getString("sID");
+            tailorCharge=getArguments().getString("tailorCharge");
 
             ((CustomerMainActivity) getActivity()).setToolbarName(shopName+": "+clothType);
 //            Log.d("clothTypeeeeeeeeeeeeeeeee1",clothType);
@@ -51,8 +52,8 @@ public class CustomerChooseFabricFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         //for currentTailorID
-//        Log.d("ShopIDDDDDDDD",shopId);
         FirebaseDatabase.getInstance().getReference().child("users").orderByChild("ShopID").equalTo(shopId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -81,11 +82,12 @@ public class CustomerChooseFabricFragment extends Fragment {
                 List<Product> productList = new ArrayList<>();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Product product = dataSnapshot.getValue(Product.class);
+                    product.setId(dataSnapshot.getKey());
                     if(product.getClothType().equals(clothType)){
                         productList.add(product);
                     }
                 }
-                recyclerView.setAdapter(new CustomerProductAdapter(productList,clothType, getContext()));
+                recyclerView.setAdapter(new CustomerProductAdapter(productList,clothType,shopId,tailorCharge, getContext()));
             }
 
             @Override
@@ -95,4 +97,4 @@ public class CustomerChooseFabricFragment extends Fragment {
         });
     }
 
-}//TODO TODO
+}

@@ -39,6 +39,7 @@ public class TailorProductFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ((TailorMainActivity) getActivity()).setToolbarName(getResources().getString(R.string.app_name)+": Products");
         addP=view.findViewById(R.id.addP);
         addP.setOnClickListener(new View.OnClickListener() {
             @Override

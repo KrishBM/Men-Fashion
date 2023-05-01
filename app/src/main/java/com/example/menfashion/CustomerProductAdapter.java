@@ -1,6 +1,7 @@
 package com.example.menfashion;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,13 @@ import java.util.List;
 
 public class CustomerProductAdapter extends RecyclerView.Adapter<CustomerProductAdapter.productViewHolder> {
     List<Product> sProduct;
-    String sClothType;
+    String clothType,shopId,tailorCharge;
     Context sContext;
-    public CustomerProductAdapter(@NonNull List<Product> products,String clothType, Context context) {
+    public CustomerProductAdapter(@NonNull List<Product> products,String clothType,String shopId,String tailorCharge, Context context) {
         sProduct=products;
-        sClothType=clothType;
+        this.clothType=clothType;
+        this.shopId=shopId;
+        this.tailorCharge=tailorCharge;
         sContext=context;
 
     }
@@ -49,41 +52,24 @@ public class CustomerProductAdapter extends RecyclerView.Adapter<CustomerProduct
         holder.card.setOnClickListener(v -> {
             //measurement
             AppCompatActivity activity = (AppCompatActivity) v.getContext();
-            if(sClothType.equals("Shirt")){
+
+            Bundle bundle =new Bundle();
+            bundle.putString("productID",product.getId());
+            bundle.putString("fabricPrice",product.getFabricPrice());
+            bundle.putString("tailorCharge",tailorCharge);
+            bundle.putString("clothType",clothType);
+            bundle.putString("shopId",shopId);
+
+            if(clothType.equals("Shirt")){
                 ShirtMeasurementFragment shirtMeasurementFragment=new ShirtMeasurementFragment();
-//                shirtMeasurementFragment.setArguments(bundle);
+                shirtMeasurementFragment.setArguments(bundle);
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,shirtMeasurementFragment).addToBackStack(null).commit();
 
             }else {
                 TrouserMeasurementFragment trouserMeasurementFragment=new TrouserMeasurementFragment();
-//                trouserMeasurementFragment.setArguments(bundle);
+                trouserMeasurementFragment.setArguments(bundle);
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,trouserMeasurementFragment).addToBackStack(null).commit();
             }
-
-//            Bundle bundle=new Bundle();
-//            FirebaseDatabase.getInstance().getReference().child("ProductData").orderByChild("fabricImage").equalTo(product.getFabricImage()).addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    String currentFabricId=snapshot.getKey();
-//                    Log.d("currentFabricId",currentFabricId);
-//                    bundle.putString("fabricId", currentFabricId);
-//                    if(sClothType.equals("Shirt")){
-//                        ShirtMeasurementFragment shirtMeasurementFragment=new ShirtMeasurementFragment();
-//                        shirtMeasurementFragment.setArguments(bundle);
-//                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,shirtMeasurementFragment).addToBackStack(null).commit();
-//
-//                    }else {
-//                        TrouserMeasurementFragment trouserMeasurementFragment=new TrouserMeasurementFragment();
-//                        trouserMeasurementFragment.setArguments(bundle);
-//                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,trouserMeasurementFragment).addToBackStack(null).commit();
-//                    }
-//                }//TODO: error
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//
-//                }
-//            });
 
         });
     }

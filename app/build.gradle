@@ -61,8 +61,10 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
     //fragment
-    implementation 'androidx.fragment:fragment:1.5.6'
+    implementation 'androidx.fragment:fragment:1.5.7'
 
+    //capitalize
+    implementation 'org.apache.commons:commons-text:1.9'
 //    def nav_version = "2.5.3"
 //
 //    // Java language implementation

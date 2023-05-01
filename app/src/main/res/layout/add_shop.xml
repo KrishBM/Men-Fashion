@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:background="#D4ECE8"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#D4ECE8"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -92,8 +93,27 @@ android:background="#D4ECE8"
             android:textColor="@color/colorPrimary" />
 
     </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/trouser_price_L"
+        android:fontFamily="@font/pop_light"
+        android:text="Currently Available?"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="4dp"/>
+
+    <Switch
+        android:id="@+id/availableShopSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:layout_below="@id/trouser_price_L"
+        android:checked="true"
+        android:textOff="Off"
+        android:textOn="On"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
     <ImageView
-        android:layout_below="@+id/trouser_price_L"
+        android:layout_below="@+id/availableShopSwitch"
         android:layout_marginTop="40dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -101,7 +121,7 @@ android:background="#D4ECE8"
 
     <Button
         android:layout_marginTop="40dp"
-        android:layout_below="@+id/trouser_price_L"
+        android:layout_below="@+id/availableShopSwitch"
         android:id="@+id/uploadButton"
         android:fontFamily="@font/pop_medium"
         android:layout_width="match_parent"
