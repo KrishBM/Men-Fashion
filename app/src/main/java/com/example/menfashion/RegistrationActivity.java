@@ -176,7 +176,7 @@ public class RegistrationActivity extends AppCompatActivity implements AddShopDi
 
                                 FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                                User user=new User(email,password,name,number,switchStr);
+                                User user=new User(email,name,number,password,switchStr);
                                 FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
@@ -203,48 +203,6 @@ public class RegistrationActivity extends AppCompatActivity implements AddShopDi
                                         }, 1000);
                                     }
                                 });
-//                                DatabaseReference refEmail = FirebaseDatabase.getInstance().getReference();
-//                                DatabaseReference finalEmail = refEmail.child("users").child(currentUser.getUid()).child("email");
-//                                finalEmail.setValue(email);
-//
-//                                DatabaseReference refPass = FirebaseDatabase.getInstance().getReference();
-//                                DatabaseReference finalPass = refPass.child("users").child(currentUser.getUid()).child("password");
-//                                finalPass.setValue(password);
-//
-//                                DatabaseReference refName = FirebaseDatabase.getInstance().getReference();
-//                                DatabaseReference finalName = refName.child("users").child(currentUser.getUid()).child("name");
-//                                finalName.setValue(name);
-//
-//                                DatabaseReference refNumber = FirebaseDatabase.getInstance().getReference();
-//                                DatabaseReference finalNumber = refNumber.child("users").child(currentUser.getUid()).child("number");
-//                                finalNumber.setValue(number);
-//
-//                                DatabaseReference refRole = FirebaseDatabase.getInstance().getReference();
-//                                DatabaseReference finalRole = refRole.child("users").child(currentUser.getUid()).child("role");
-//                                finalRole.setValue(switchStr);
-//
-//                                Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
-
-                                // hide the progress bar
-//                                stopProgress();
-//
-//                                if(switchStr.equals("tailor")){
-//                                    openDialog(name,number,email,password);
-//
-////                                    startActivity(new Intent(getApplicationContext(),TailorMainActivity.class));
-//                                }else{
-//                                    //Customer
-//                                    startActivity(new Intent(getApplicationContext(),CustomerMainActivity.class));
-//                                }
-//
-//                                new Handler().postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        // if the user created intent to login activity
-////                                        startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
-////                                        finish();
-//                                    }
-//                                }, 1000);
 
                             } else {
 

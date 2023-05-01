@@ -1,57 +1,32 @@
 package com.example.menfashion;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TailorOrderProcessingFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class TailorOrderProcessingFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    RecyclerView recyclerView;
+    TailorOrderProcessingFragment tailorOrderProcessingFragment;
 
     public TailorOrderProcessingFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TailorOrderProcessingFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TailorOrderProcessingFragment newInstance(String param1, String param2) {
-        TailorOrderProcessingFragment fragment = new TailorOrderProcessingFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -59,5 +34,58 @@ public class TailorOrderProcessingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tailor_order_processing, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ((TailorMainActivity) getActivity()).setToolbarName("Processing Order");
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        dataInitialize1();
+    }
+    private void dataInitialize1() {
+        final String[] shopID = new String[1];
+        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                User user=snapshot.getValue(User.class);
+                shopID[0] =user.getShopID();
+//                Log.d("aaaaaaaaaaaaaaaaaaaa",shopID[0]);
+                FirebaseDatabase.getInstance().getReference().child("orders").orderByChild("shopId").equalTo(shopID[0]).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<Order> orderList = new ArrayList<>();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Order order = dataSnapshot.getValue(Order.class);
+                            order.setOrderID(dataSnapshot.getKey());
+                            if(order.getOrderStatus().equals("processing")){
+                                orderList.add(order);
+//                                Log.d("aaaaaaaaaaaaaaaaaaaa",order.getClothType());
+                            }
+                        }
+                        recyclerView.setAdapter(new TailorOrderProcessingAdapter(orderList, getContext()));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("Firebase", "Error: " + error.getMessage());
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 }

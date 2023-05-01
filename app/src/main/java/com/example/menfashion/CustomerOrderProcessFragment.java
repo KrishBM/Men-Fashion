@@ -18,7 +18,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,7 +42,7 @@ public class CustomerOrderProcessFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((CustomerMainActivity) getActivity()).setToolbarName(getResources().getString(R.string.app_name)+": Processing Order");
+        ((CustomerMainActivity) getActivity()).setToolbarName(": Processing Order");
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -57,9 +59,36 @@ public class CustomerOrderProcessFragment extends Fragment {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Order order = dataSnapshot.getValue(Order.class);
                     order.setOrderID(dataSnapshot.getKey());
-                    if(order.getOrderStatus().equals("processing") ){//TODO: deliverydate condition
-                        orderList.add(order);
+
+                    /////////
+                    // Get the current date
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
+
+//                    String currentDate=sdf.format(new Date());
+                    try {
+                        // Parse the delivery date string into a Date object
+                        Date deliveryDate = sdf.parse(order.getDeliveryDate());
+
+                        // Get the current date
+                        Date currentDate = new Date();
+
+                        // Compare the delivery date with the current date
+                        if (currentDate.compareTo(deliveryDate) < 0) {
+                            order.setOrderStatus("processing");
+                            System.out.println("Delivery date is in the future.");
+                            if(order.getOrderStatus().equals("processing") ){//TODO: deliverydate condition
+                                orderList.add(order);
+                            }
+                        } else {
+                            order.setOrderStatus("delivered");
+                            System.out.println("Delivery date is in the past.");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("An error occurred: " + e.getMessage());
                     }
+
+
+
                 }
                 recyclerView.setAdapter(new CustomerOrderProcessAdapter(orderList, getContext()));
             }
